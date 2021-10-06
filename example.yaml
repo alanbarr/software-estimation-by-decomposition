@@ -1,0 +1,65 @@
+Project:
+    Name: "Example"
+    Units: "weeks"
+    ProbabilityEstimatesInRange: 0.80
+
+Tasks:
+    - ID: 1
+      Description: "Feature 1"
+      BestCase: 1.6
+      WorstCase: 3.0
+      MostLikely: 2.0
+
+    - ID: 2
+      Description: "Feature 2"
+      BestCase: 1.8
+      WorstCase: 4.0
+      MostLikely: 2.5
+
+    - ID: 3
+      Description: "Feature 3"
+      BestCase: 2.0
+      WorstCase: 4.2
+      MostLikely: 3.0
+
+    - ID: 4
+      Description: "Feature 4"
+      BestCase: 0.8
+      WorstCase: 1.6
+      MostLikely: 1.2
+
+    - ID: 5
+      Description: "Feature 5"
+      BestCase: 3.8
+      WorstCase: 5.2
+      MostLikely: 4.5
+
+    - ID: 6
+      Description: "Feature 6"
+      BestCase: 3.8
+      WorstCase: 6
+      MostLikely: 5
+
+    - ID: 7
+      Description: "Feature 7"
+      BestCase: 2.2
+      WorstCase: 3.4
+      MostLikely: 2.4
+
+    - ID: 8
+      Description: "Feature 8"
+      BestCase: 0.8
+      WorstCase: 2.2
+      MostLikely: 1.2
+
+    - ID: 9
+      Description: "Feature 9"
+      BestCase: 1.6
+      WorstCase: 3.0
+      MostLikely: 2.5
+
+    - ID: 10
+      Description: "Feature 10"
+      BestCase: 1.6
+      WorstCase: 6
+      MostLikely: 4
