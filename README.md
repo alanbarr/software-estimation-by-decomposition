@@ -16,9 +16,10 @@ Estimation, namely:
 
 # Getting Setup
 
-    python3 venv -m venv
+    python3 -m venv venv
     source venv/bin/activate
-    pip3 install -r requirements.txt
+    pip3 install --upgrade pip
+    pip3 install --requirement requirements.txt
 
     python3 -m pytest
 
