@@ -153,3 +153,17 @@ def test_example_from_sw_estimation_80_percent_confidence():
     assert math.isclose(test_data["predictions"]["70"], 30.0, rel_tol=0.005)
     assert math.isclose(test_data["predictions"]["90"], 31.8, rel_tol=0.005)
     assert math.isclose(test_data["predictions"]["98"], 33.7, rel_tol=0.010)
+
+
+def test_example_running_totals():
+
+    test_data = _get_td(0.80)
+
+    confidences_to_calcuate = []
+
+    process_project_data(test_data, confidences_to_calcuate)
+
+    assert math.isclose(test_data["BestCaseTotal"], 20.0)
+    assert math.isclose(test_data["WorstCaseTotal"], 38.6)
+    assert math.isclose(test_data["MostLikelyTotal"], 28.3)
+    assert math.isclose(test_data["ExpectedTotal"], 28.62)

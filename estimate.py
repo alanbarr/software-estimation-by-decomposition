@@ -46,6 +46,7 @@ def _print_summary(data):
         "Task Count",
         "Best Case Total" + units,
         "Worst Case Total" + units,
+        "Most Likely Case Total" + units,
         "Expected (PERT) Total" + units,
         "Standard Deviation",
     ]
@@ -54,6 +55,7 @@ def _print_summary(data):
             data["TaskCount"],
             data["BestCaseTotal"],
             data["WorstCaseTotal"],
+            data["MostLikelyTotal"],
             data["ExpectedTotal"],
             data["StandardDeviation"],
         ]

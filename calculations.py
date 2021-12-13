@@ -46,6 +46,7 @@ def perform_task_calculations(data):
     data["VarianceTotal"] = 0
     data["BestCaseTotal"] = 0
     data["WorstCaseTotal"] = 0
+    data["MostLikelyTotal"] = 0
     data["ExpectedTotal"] = 0
     for task in data["Tasks"]:
         _calculate_expected_pert(task)
@@ -57,6 +58,7 @@ def perform_task_calculations(data):
         data["VarianceTotal"] += task["Variance"]
         data["BestCaseTotal"] += task["BestCase"]
         data["WorstCaseTotal"] += task["WorstCase"]
+        data["MostLikelyTotal"] += task["MostLikely"]
         data["ExpectedTotal"] += task["Expected"]
     data["StandardDeviation"] = round(math.sqrt(data["VarianceTotal"]), 2)
 
