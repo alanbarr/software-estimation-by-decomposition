@@ -5,6 +5,7 @@ import yaml
 import tabulate
 from calculations import perform_task_calculations, calculate_predictions
 from validation import validate_data
+import critical_path
 
 
 def _print_tasks(data):
@@ -100,3 +101,5 @@ if __name__ == "__main__":
     _print_tasks(data)
     _print_summary(data)
     _print_prediction(data)
+
+    graph_builder.graphing(data)

@@ -21,6 +21,7 @@ Tasks:
       BestCase: 2.0
       WorstCase: 4.2
       MostLikely: 3.0
+      DependsOnIDs: [1,2]
 
     - ID: 4
       Description: "Feature 4"
