@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import networkx as nx
 
 
@@ -8,14 +7,31 @@ def _draw_it(graph, filename):
     )  # positions for all nodes - seed for reproducibility
 
     A = nx.nx_agraph.to_agraph(graph)
-    print(type(A))
-    print(A)
+    # print(type(A))
+    # print(A)
     A.layout("dot")
     A.draw(filename)
 
 
 def _calculate_critical_path(graph, cost_label):
-    return nx.dag_longest_path(graph, weight=cost_label, default_weight=0)
+    args = {"G": graph, "weight": cost_label, "default_weight": 0}
+
+    path_info = {
+        "nodes": nx.dag_longest_path(**args),
+        "time": nx.dag_longest_path_length(**args),
+    }
+
+    try:
+        path_info["nodes"].remove("START")
+    except ValueError:
+        pass
+
+    try:
+        path_info["nodes"].remove("END")
+    except ValueError:
+        pass
+
+    return path_info
 
 
 def _calculate_critical_paths(graph):
@@ -27,22 +43,7 @@ def _calculate_critical_paths(graph):
         "MostLikely": _calculate_critical_path(graph, "WeightMostLikelyCase"),
     }
 
-    for list_of_nodes in critical_paths.values():
-        try:
-            list_of_nodes.remove("START")
-        except ValueError:
-            continue
-
-        try:
-            list_of_nodes.remove("END")
-        except ValueError:
-            continue
-
     return critical_paths
-
-
-def _build_critical_paths(graph):
-    pass
 
 
 def _build_graph(data):
@@ -82,21 +83,12 @@ def _build_graph(data):
 
     return graph
 
-    _draw_it(graph)
-    print("Best Case Critical Path")
-    print(nx.dag_longest_path(graph, weight="WeightBestCase", default_weight=0))
-
-    print("Expected Case Critical Path")
-    print(nx.dag_longest_path(graph, weight="WeightExpected", default_weight=0))
-
-    print("Worst Case Critical Path")
-    print(nx.dag_longest_path(graph, weight="WeightWorstCase", default_weight=0))
-
 
 def calculate_critical_path(data, output_file_name=None):
 
     graph = _build_graph(data)
 
+    output_file_name = "crit_path.png"
     if output_file_name:
         _draw_it(graph, output_file_name)
 

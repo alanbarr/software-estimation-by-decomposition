@@ -88,6 +88,13 @@ def process_project_data(data, confidence_percentages=None):
     calculate_predictions(data, confidence_percentages)
 
 
+def _handle_critical_path(data):
+    crit_paths = critical_path.calculate_critical_path(data)
+
+    for i in crit_paths.items():
+        print(i)
+
+
 if __name__ == "__main__":
     data = None
 
@@ -102,4 +109,4 @@ if __name__ == "__main__":
     _print_summary(data)
     _print_prediction(data)
 
-    graph_builder.graphing(data)
+    _handle_critical_path(data)

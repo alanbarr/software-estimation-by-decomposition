@@ -28,10 +28,17 @@ def test_will_pick_biggest_of_two_independant_tasks():
     }
 
     crit_path = calculate_critical_path(test_data)
-    assert crit_path["BestCase"] == [2]
-    assert crit_path["MostLikely"] == [1]
-    assert crit_path["WorstCase"] == [2]
-    assert crit_path["Expected"] == [1]
+    assert crit_path["BestCase"]["nodes"] == [2]
+    assert crit_path["BestCase"]["time"] == 2
+
+    assert crit_path["MostLikely"]["nodes"] == [1]
+    assert crit_path["MostLikely"]["time"] == 5
+
+    assert crit_path["WorstCase"]["nodes"] == [2]
+    assert crit_path["WorstCase"]["time"] == 11
+
+    assert crit_path["Expected"]["nodes"] == [1]
+    assert crit_path["Expected"]["time"] == 4
 
 
 def test_will_pick_tie_in_independant_paths():
@@ -58,16 +65,23 @@ def test_will_pick_tie_in_independant_paths():
     }
 
     crit_path = calculate_critical_path(test_data)
-    assert len(crit_path["BestCase"]) == 1
-    assert len(crit_path["MostLikely"]) == 1
-    assert len(crit_path["WorstCase"]) == 1
-    assert len(crit_path["Expected"]) == 1
+    assert len(crit_path["BestCase"]["nodes"]) == 1
+    assert len(crit_path["MostLikely"]["nodes"]) == 1
+    assert len(crit_path["WorstCase"]["nodes"]) == 1
+    assert len(crit_path["Expected"]["nodes"]) == 1
 
     # TODO do we care about ties?
-    assert crit_path["BestCase"][0] in [1, 2]
-    assert crit_path["MostLikely"][0] in [1, 2]
-    assert crit_path["WorstCase"][0] in [1, 2]
-    assert crit_path["Expected"][0] in [1, 2]
+    assert crit_path["BestCase"]["nodes"][0] in [1, 2]
+    assert crit_path["BestCase"]["time"] == 1
+
+    assert crit_path["MostLikely"]["nodes"][0] in [1, 2]
+    assert crit_path["MostLikely"]["time"] == 2
+
+    assert crit_path["WorstCase"]["nodes"][0] in [1, 2]
+    assert crit_path["WorstCase"]["time"] == 3
+
+    assert crit_path["Expected"]["nodes"][0] in [1, 2]
+    assert crit_path["Expected"]["time"] == 2
 
 
 def test_longest_path_is_chosen_with_two_divergent_paths():
@@ -104,10 +118,17 @@ def test_longest_path_is_chosen_with_two_divergent_paths():
     }
 
     crit_path = calculate_critical_path(test_data)
-    assert crit_path["BestCase"] == [1, 2]
-    assert crit_path["MostLikely"] == [1, 3]
-    assert crit_path["WorstCase"] == [1, 2]
-    assert crit_path["Expected"] == [1, 3]
+    assert crit_path["BestCase"]["nodes"] == [1, 2]
+    assert crit_path["BestCase"]["time"] == 5
+
+    assert crit_path["MostLikely"]["nodes"] == [1, 3]
+    assert crit_path["MostLikely"]["time"] == 5
+
+    assert crit_path["WorstCase"]["nodes"] == [1, 2]
+    assert crit_path["WorstCase"]["time"] == 5
+
+    assert crit_path["Expected"]["nodes"] == [1, 3]
+    assert crit_path["Expected"]["time"] == 5
 
 
 def test_loop_will_throw_exception():
