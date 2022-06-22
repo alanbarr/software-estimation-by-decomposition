@@ -88,11 +88,21 @@ def process_project_data(data, confidence_percentages=None):
     calculate_predictions(data, confidence_percentages)
 
 
+def _print_critical_path(critical_paths, units, estimate_type):
+    print(f"{estimate_type} critical path:")
+    print(f"  Requires {critical_paths[estimate_type]['time']} {units}")
+    nodes = [str(node) for node in critical_paths[estimate_type]["nodes"]]
+    nodes = "->".join(nodes)
+    print("  " + nodes)
+
 def _handle_critical_path(data):
     crit_paths = critical_path.calculate_critical_path(data)
-
-    for i in crit_paths.items():
-        print(i)
+    units = data["Project"]["Units"]
+    print("\nCritical Path")
+    _print_critical_path(crit_paths, units, "Expected")
+    _print_critical_path(crit_paths, units, "BestCase")
+    _print_critical_path(crit_paths, units, "WorstCase")
+    _print_critical_path(crit_paths, units, "MostLikely")
 
 
 if __name__ == "__main__":

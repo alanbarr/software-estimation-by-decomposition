@@ -1,14 +1,12 @@
 import networkx as nx
 
 
-def _draw_it(graph, filename):
+def _save_image(graph, filename):
     pos = nx.spring_layout(
         graph, seed=7
     )  # positions for all nodes - seed for reproducibility
 
     A = nx.nx_agraph.to_agraph(graph)
-    # print(type(A))
-    # print(A)
     A.layout("dot")
     A.draw(filename)
 
@@ -18,7 +16,7 @@ def _calculate_critical_path(graph, cost_label):
 
     path_info = {
         "nodes": nx.dag_longest_path(**args),
-        "time": nx.dag_longest_path_length(**args),
+        "time": round(nx.dag_longest_path_length(**args), 2),
     }
 
     try:
@@ -90,6 +88,6 @@ def calculate_critical_path(data, output_file_name=None):
 
     output_file_name = "crit_path.png"
     if output_file_name:
-        _draw_it(graph, output_file_name)
+        _save_image(graph, output_file_name)
 
     return _calculate_critical_paths(graph)

@@ -40,6 +40,7 @@ Tasks:
       BestCase: 3.8
       WorstCase: 6
       MostLikely: 5
+      DependsOnIDs: [5]
 
     - ID: 7
       Description: "Feature 7"
@@ -64,3 +65,4 @@ Tasks:
       BestCase: 1.6
       WorstCase: 6
       MostLikely: 4
+      DependsOnIDs: [1, 6, 9]
