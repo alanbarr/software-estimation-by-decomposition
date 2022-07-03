@@ -7,15 +7,20 @@ from calculations import perform_task_calculations, calculate_predictions
 from validation import validate_data
 import critical_path
 
+_HEADING_BC = "Best Case"
+_HEADING_ML = "Most Likely Case"
+_HEADING_WC = "Worst Case"
+_HEADING_EC = "Expected (PERT) Case"
+
 
 def _print_tasks(data):
     units = f'\n({data["Project"]["Units"]})'
     headers = [
         "ID",
-        "BestCase" + units,
-        "MostLikely" + units,
-        "WorstCase" + units,
-        "Expected (PERT)" + units,
+        _HEADING_BC + units,
+        _HEADING_ML + units,
+        _HEADING_WC + units,
+        _HEADING_EC + units,
         "Variance",
     ]
 
@@ -45,10 +50,10 @@ def _print_summary(data):
     units = f'\n ({data["Project"]["Units"]})'
     headers = [
         "Task Count",
-        "Best Case Total" + units,
-        "Worst Case Total" + units,
-        "Most Likely Case Total" + units,
-        "Expected (PERT) Total" + units,
+        _HEADING_BC + " Total" + units,
+        _HEADING_WC + " Total" + units,
+        _HEADING_ML + " Total" + units,
+        _HEADING_EC + " Total" + units,
         "Standard Deviation",
     ]
     rows = [
@@ -79,6 +84,7 @@ def _print_prediction(data):
 def _parse_arguments():
     parser = argparse.ArgumentParser(description="Calculate task breakdown summary")
     parser.add_argument("input_yaml", help="Input file")
+    parser.add_argument("--graph", help="Filename of the dependancy graph")
     return parser.parse_args()
 
 
@@ -88,21 +94,44 @@ def process_project_data(data, confidence_percentages=None):
     calculate_predictions(data, confidence_percentages)
 
 
-def _print_critical_path(critical_paths, units, estimate_type):
-    print(f"{estimate_type} critical path:")
-    print(f"  Requires {critical_paths[estimate_type]['time']} {units}")
-    nodes = [str(node) for node in critical_paths[estimate_type]["nodes"]]
-    nodes = "->".join(nodes)
-    print("  " + nodes)
+def _make_critical_path_row(critical_paths, estimate_lookup, estimate_log ):
 
-def _handle_critical_path(data):
-    crit_paths = critical_path.calculate_critical_path(data)
+    nodes = [str(node) for node in critical_paths[estimate_lookup]["nodes"]]
+    nodes = "->".join(nodes)
+
+    row = []
+    row.append(estimate_log)
+    row.append(critical_paths[estimate_lookup]['time'])
+    row.append(nodes)
+
+    return row
+
+
+def _print_critical_path(critical_paths):
     units = data["Project"]["Units"]
-    print("\nCritical Path")
-    _print_critical_path(crit_paths, units, "Expected")
-    _print_critical_path(crit_paths, units, "BestCase")
-    _print_critical_path(crit_paths, units, "WorstCase")
-    _print_critical_path(crit_paths, units, "MostLikely")
+
+    headers = [
+        "Critical Path Type",
+        f"Estimate ({units})",
+        "Tasks"
+    ]
+
+    types_to_tabulate = [
+            ("Expected", _HEADING_EC),
+            ("BestCase", _HEADING_BC),
+            ("WorstCase", _HEADING_WC),
+            ("MostLikely", _HEADING_ML),
+    ]
+
+    rows = [_make_critical_path_row(critical_paths, t[0], t[1]) for t in types_to_tabulate]
+
+    print("\n")
+    print(tabulate.tabulate(rows, headers=headers, floatfmt=[""] + [".1f"]))
+
+def _handle_critical_path(data, output_graph_filename: str):
+    crit_paths = critical_path.calculate_critical_path(data, output_graph_filename)
+
+    _print_critical_path(crit_paths)
 
 
 if __name__ == "__main__":
@@ -119,4 +148,4 @@ if __name__ == "__main__":
     _print_summary(data)
     _print_prediction(data)
 
-    _handle_critical_path(data)
+    _handle_critical_path(data, args.graph)

@@ -86,7 +86,6 @@ def calculate_critical_path(data, output_file_name=None):
 
     graph = _build_graph(data)
 
-    output_file_name = "crit_path.png"
     if output_file_name:
         _save_image(graph, output_file_name)
 
