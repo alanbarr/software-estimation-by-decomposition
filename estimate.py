@@ -94,14 +94,14 @@ def process_project_data(data, confidence_percentages=None):
     calculate_predictions(data, confidence_percentages)
 
 
-def _make_critical_path_row(critical_paths, estimate_lookup, estimate_log ):
+def _make_critical_path_row(critical_paths, estimate_lookup, estimate_log):
 
     nodes = [str(node) for node in critical_paths[estimate_lookup]["nodes"]]
     nodes = "->".join(nodes)
 
     row = []
     row.append(estimate_log)
-    row.append(critical_paths[estimate_lookup]['time'])
+    row.append(critical_paths[estimate_lookup]["time"])
     row.append(nodes)
 
     return row
@@ -110,23 +110,22 @@ def _make_critical_path_row(critical_paths, estimate_lookup, estimate_log ):
 def _print_critical_path(critical_paths):
     units = data["Project"]["Units"]
 
-    headers = [
-        "Critical Path Type",
-        f"Estimate ({units})",
-        "Tasks"
-    ]
+    headers = ["Critical Path Type", f"Estimate ({units})", "Tasks"]
 
     types_to_tabulate = [
-            ("Expected", _HEADING_EC),
-            ("BestCase", _HEADING_BC),
-            ("WorstCase", _HEADING_WC),
-            ("MostLikely", _HEADING_ML),
+        ("Expected", _HEADING_EC),
+        ("BestCase", _HEADING_BC),
+        ("WorstCase", _HEADING_WC),
+        ("MostLikely", _HEADING_ML),
     ]
 
-    rows = [_make_critical_path_row(critical_paths, t[0], t[1]) for t in types_to_tabulate]
+    rows = [
+        _make_critical_path_row(critical_paths, t[0], t[1]) for t in types_to_tabulate
+    ]
 
     print("\n")
     print(tabulate.tabulate(rows, headers=headers, floatfmt=[""] + [".1f"]))
+
 
 def _handle_critical_path(data, output_graph_filename: str):
     crit_paths = critical_path.calculate_critical_path(data, output_graph_filename)
