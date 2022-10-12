@@ -158,3 +158,25 @@ def test_loop_will_throw_exception():
 
     with pytest.raises(networkx.exception.NetworkXUnfeasible):
         crit_path = calculate_critical_path(test_data)
+
+
+def test_unknown_dependancy_id_will_throw():
+    test_data = {
+        "Tasks": [
+            {
+                "ID": "a_task_id",
+                "Description": "Feature 1",
+                "BestCase": 2,
+                "MostLikely": 2,
+                "WorstCase": 2,
+                "Expected": 2,
+                "DependsOnIDs": ["non_existant_task_id"],
+            },
+        ]
+    }
+
+    with pytest.raises(IndexError) as exception:
+        crit_path = calculate_critical_path(test_data)
+    msg = str(exception)
+    assert "a_task_id" in msg
+    assert "non_existant_task_id" in msg

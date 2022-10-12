@@ -49,6 +49,8 @@ def _build_graph(data):
 
     est_type = "Expected"
 
+    task_ids = [t["ID"] for t in data["Tasks"]]
+
     for task in data["Tasks"]:
 
         task_id = task["ID"]
@@ -64,6 +66,10 @@ def _build_graph(data):
         try:
             if task["DependsOnIDs"]:
                 for dep in task["DependsOnIDs"]:
+                    if dep not in task_ids:
+                        raise IndexError(
+                            f"task {task['ID']} depends on {dep} - but this does not exist"
+                        )
                     graph.add_edge(dep, task_id, label=task[est_type], **weights)
 
         except KeyError:
@@ -71,9 +77,7 @@ def _build_graph(data):
             graph.add_edge("START", task_id, label=task[est_type], **weights)
             continue
 
-    for task in data["Tasks"]:
-
-        task_id = task["ID"]
+    for task_id in task_ids:
 
         # If this task is pointing to another, remove the END node
         if graph.out_degree(task_id) > 1:
